@@ -46,17 +46,25 @@ body {
 .ind-ship-wrapper {
   align-items: center;
   display: flex;
-  flex-wrap: wrap;
-  height: 100%;
+  height: 10px;
+  width: 60px;
   justify-content: center;
-  height: 60px;
-  width: 10px;
+  margin: 10px;
 }
 
 .ship {
   background-color: blue;
+  align-items: center;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  height: 30px;
+  width: 90px;
+}
+
+.ship div {
   border: 1px solid lightgrey;
   flex-grow: 1;
-  height: 10%;
-  width: 30%;
+  height: 30px;
+  width: 30px;
 }
