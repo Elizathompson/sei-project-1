@@ -28,18 +28,22 @@ function init() {
   createGrid()
 
   // * ship variables
-  
+ 
 
 
   // * create ships 
 
   function createShips() {
     ships.forEach(ship => {
-      for (let i = 0; i < 3; i++) {
+      const shipSize = ship.id
+      for (let i = 0; i < shipSize; i++) {
         const cell = document.createElement('div')
         cell.textContent = i
         ship.appendChild(cell)
         cellsShip.push(cell)
+        const shipWidth = 30 * shipSize
+        ship.style.width = shipWidth + 'px'
+        ship.style.backgroundColor = 'red'
       }
     })
   }
