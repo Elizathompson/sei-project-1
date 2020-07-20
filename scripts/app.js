@@ -93,27 +93,34 @@ function init() {
   }
   
   function selectLocation(e) {
+    const targetIndex = parseInt(e.target.textContent)
+    const shipL = parseInt(window.shipLength)
+    const targetLimit = targetIndex + shipL
+    console.log(targetLimit)
+    const canShipBePlaced = parseInt(width) - parseInt(shipL)
+    console.log(canShipBePlaced)
+    const xValue = targetIndex % width
+    console.log(xValue)
     if (window.shipLength === '') {
       console.log('No ship selected')
     } else if (e.target.classList.contains('placedShip')) {
       console.log('there is a ship here already')
       return 
-    } else {
+    } else if ( xValue <= canShipBePlaced){
       console.log('ship goes here')
       const targetCell = e.target
       targetCell.classList.add('placedShip')
-      const targetIndex = e.target.textContent
-      const shipL = window.shipLength
-      const targetLimit = parseInt(targetIndex) + parseInt(shipL)
-      console.log(targetLimit)
-      for (let i = targetIndex; i < targetLimit; i++) {
-        playerCells[i].classList.add('placedShip')
+      for (let i = targetIndex; i <   targetLimit; i++) {
+        playerCells[i].classList.add  ('placedShip')
+        window.shipLength = ''
       }
-      window.shipLength = ''
+    } else {
+      console.log('this ship will not fit here')
     }
-    //select the square where the ship will go around 
-    // add ship class to the surrounding squares the total of the ship id?
   }
+  //select the square where the ship will go around 
+  // add ship class to the surrounding squares the total of the ship id?
+
   //event 
 
 
