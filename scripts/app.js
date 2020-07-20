@@ -41,8 +41,8 @@ function init() {
       const shipSize = ship.id
       for (let i = 0; i < shipSize; i++) {
         const cell = document.createElement('div')
+        cell.classList.add('shipCell')
         cell.textContent = i
-
         ship.appendChild(cell)
         cellsShip.push(cell)
         const shipHeight = 30
@@ -60,23 +60,39 @@ function init() {
   //element  
   // ? see ships above 
   //create playerCell class 
+  const playerCells = document.querySelectorAll('#player-grid .cell')
+  playerCells.forEach(cell => {
+    cell.classList.add('playerCell')
+  })
+  
 
 
 
   //execution 
 
+  // ! should select ship and ship placement be inside one funciton?!
+
   function selectShip() {
     console.log('ship selected')
+    //chnage color of the ship to show its been selected
+    // store the id of the ship aka the number of squares to highlight in the grid 
+    //make it so it cannot be selected again 
+    //change colour to show it has been placed 
   }
 
   function selectLocation() {
     console.log('ship goes here')
+    //select the square where the ship will go around 
+    // add ship class to the surrounding squares the total of the ship id?
   }
   //event 
 
 
   ships.forEach(ship => {
     ship.addEventListener('click', selectShip)
+  })
+  playerCells.forEach(cell => {
+    cell.addEventListener('click', selectLocation)
   })
 
   // .forEach(ship => {
