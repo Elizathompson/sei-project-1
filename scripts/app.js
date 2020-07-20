@@ -114,7 +114,7 @@ function init() {
       }
     }
   }
-  
+
 
 
 
@@ -127,23 +127,33 @@ function init() {
     console.log(xLimitWhereShipFits)
     const xValue = targetIndex % width
     console.log(xValue)
-    if (shipLength === '') {
+    if (shipLength === 0) {
       console.log('No ship selected')
     } else if (e.target.classList.contains('placedShip')) {
       console.log('there is a ship here already')
       return 
+    } else {
+
+
       //if no shift key held 
-    } else if ( xValue <= xLimitWhereShipFits){
-      checkValid(targetIndex, targetLimit)
-      if (isValid) {
-        drawShip(targetIndex, targetLimit, e.target)
-      } else {
-        console.log('this ship will not fit here')
-        isValid = true
+      switch (e.keycode) {
+        case 86:
+          // if v key held -> places vertically
+          console.log('shift key held')
+          break
+        default: 
+          if ( xValue <= xLimitWhereShipFits)
+            checkValid(targetIndex, targetLimit)
+          if (isValid) {
+            drawShip(targetIndex, targetLimit, e.target)
+          } else {
+            console.log('this ship will not fit here')
+            isValid = true
+          }
       }
     }
-    // if shift key held -> places vertically
   }
+
   //select the square where the ship will go around 
   // add ship class to the surrounding squares the total of the ship id?
 
@@ -157,7 +167,7 @@ function init() {
     cell.addEventListener('click', selectLocation)
   })
 
-
+  // document.addEventListener('keydown', )
 
 
 }
