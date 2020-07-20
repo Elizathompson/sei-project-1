@@ -32,7 +32,7 @@ body {
   flex-grow: 1;
   height: 10%;
   width: 10%;
-  background-color:blue;
+  /* background-color:blue; */
 }
 
 
@@ -67,4 +67,12 @@ body {
   flex-grow: 1;
   height: 30px;
   width: 30px;
+}
+
+.selected {
+  background-color: yellow;
+}
+
+.placedShip {
+  background-color: pink;
 }

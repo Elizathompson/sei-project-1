@@ -72,16 +72,35 @@ function init() {
 
   // ! should select ship and ship placement be inside one funciton?!
 
-  function selectShip() {
-    console.log('ship selected')
+  function selectShip(e) {
+    console.log('ship Selected')
+    const shipCell = e.target
+    const wholeShip = shipCell.parentElement
+    wholeShip.classList.toggle('selected')
+    const shipLength = wholeShip.id
+    console.log(shipLength)
+    return shipLength
+    
+    // 
     //chnage color of the ship to show its been selected
     // store the id of the ship aka the number of squares to highlight in the grid 
     //make it so it cannot be selected again 
     //change colour to show it has been placed 
   }
+  
+  function selectLocation(e) {
+    if (e.target.classList.contains('placedShip')) {
+      console.log('there is a ship here already')
+      return 
+    } else {
+      console.log('ship goes here')
+      const targetCell = e.target
+      targetCell.classList.add('placedShip')
 
-  function selectLocation() {
-    console.log('ship goes here')
+    }
+
+    
+
     //select the square where the ship will go around 
     // add ship class to the surrounding squares the total of the ship id?
   }
@@ -94,11 +113,6 @@ function init() {
   playerCells.forEach(cell => {
     cell.addEventListener('click', selectLocation)
   })
-
-  // .forEach(ship => {
-  //   ship.addEventListener('click', selectShip)
-  // })
-
 
 
 
