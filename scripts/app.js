@@ -21,6 +21,7 @@ function init() {
     grids.forEach(grid => {
       for (let i = 0; i < cellCount; i++) {
         const cell = document.createElement('div')
+        cell.classList.add('cell')
         cell.textContent = i
         grid.appendChild(cell)
         cellsGrid.push(cell)
@@ -41,6 +42,7 @@ function init() {
       for (let i = 0; i < shipSize; i++) {
         const cell = document.createElement('div')
         cell.textContent = i
+
         ship.appendChild(cell)
         cellsShip.push(cell)
         const shipHeight = 30
@@ -61,8 +63,6 @@ function init() {
 
 
 
-
-  
   //execution 
 
   function selectShip() {

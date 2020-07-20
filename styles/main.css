@@ -32,6 +32,7 @@ body {
   flex-grow: 1;
   height: 10%;
   width: 10%;
+  background-color:blue;
 }
 
 
@@ -54,7 +55,7 @@ body {
 }
 
 .ship {
-  background-color: blue;
+  background-color: pink;
   align-items: center;
   display: flex;
   height: 100%;
