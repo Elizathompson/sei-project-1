@@ -132,26 +132,28 @@ function init() {
     } else if (e.target.classList.contains('placedShip')) {
       console.log('there is a ship here already')
       return 
-    } else {
-
-
       //if no shift key held 
-      switch (e.keycode) {
-        case 86:
-          // if v key held -> places vertically
-          console.log('shift key held')
-          break
-        default: 
-          if ( xValue <= xLimitWhereShipFits)
-            checkValid(targetIndex, targetLimit)
-          if (isValid) {
-            drawShip(targetIndex, targetLimit, e.target)
-          } else {
-            console.log('this ship will not fit here')
-            isValid = true
-          }
+    } else if ( xValue <= xLimitWhereShipFits){
+      let isValid = true
+      for (let i = targetIndex; i <   targetLimit; i++) {
+        if (playerCells[i].classList.contains('placedShip')) {
+          console.log('this overlaps with another ship')
+          isValid = false
+          //SOME
+        }
       }
+      checkValid(targetIndex, targetLimit)
+      if (isValid) {
+        drawShip(targetIndex, targetLimit, e.target)
+      } else {
+        console.log('this ship will not fit here')
+        isValid = true
+        return
+      }
+    } else {
+      console.log('this ship will not fit here')
     }
+    // if shift key held -> places vertically
   }
 
   //select the square where the ship will go around 
