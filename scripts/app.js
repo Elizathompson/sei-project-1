@@ -79,9 +79,6 @@ function init() {
     wholeShip.classList.toggle('selected')
     const shipLength = wholeShip.id
     console.log(shipLength)
-    return shipLength
-    
-    // 
     //chnage color of the ship to show its been selected
     // store the id of the ship aka the number of squares to highlight in the grid 
     //make it so it cannot be selected again 
@@ -96,7 +93,13 @@ function init() {
       console.log('ship goes here')
       const targetCell = e.target
       targetCell.classList.add('placedShip')
-
+      const targetIndex = e.target.textContent
+      const shipLength = 3
+      const targetLimit = parseInt(targetIndex) + parseInt(shipLength)
+      console.log(targetLimit)
+      for (let i = targetIndex; i < targetLimit; i++) {
+        playerCells[i].classList.add('placedShip')
+      }
     }
 
     
