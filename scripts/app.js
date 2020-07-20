@@ -72,6 +72,9 @@ function init() {
 
   // ! should select ship and ship placement be inside one funciton?!
 
+
+  let shipLength = 0
+
   function selectShip(e) {
     const shipCell = e.target
     const wholeShip = shipCell.parentElement
@@ -82,7 +85,7 @@ function init() {
     } else {
       console.log('ship Selected')
       wholeShip.classList.add('selected')
-      window.shipLength = wholeShip.id
+      shipLength = wholeShip.id
     }
 
     // console.log(window.shipLength)
@@ -92,31 +95,46 @@ function init() {
     //change colour to show it has been placed 
   }
   
+  function drawShip(targetIndex, targetLimit, targetCell) {
+    for (let i = targetIndex; i <   targetLimit; i++) {
+      console.log('ship goes here')
+      targetCell.classList.add('placedShip')
+      playerCells[i].classList.add('placedShip')
+      shipLength = 0
+    }
+  }
+
   function selectLocation(e) {
     const targetIndex = parseInt(e.target.textContent)
-    const shipL = parseInt(window.shipLength)
+    const shipL = parseInt(shipLength)
     const targetLimit = targetIndex + shipL
     console.log(targetLimit)
-    const canShipBePlaced = parseInt(width) - parseInt(shipL)
-    console.log(canShipBePlaced)
+    const xLimitWhereShipFits = parseInt(width) - parseInt(shipL)
+    console.log(xLimitWhereShipFits)
     const xValue = targetIndex % width
     console.log(xValue)
-    if (window.shipLength === '') {
+    if (shipLength === '') {
       console.log('No ship selected')
     } else if (e.target.classList.contains('placedShip')) {
       console.log('there is a ship here already')
       return 
-    } else if ( xValue <= canShipBePlaced){
-      console.log('ship goes here')
-      const targetCell = e.target
-      targetCell.classList.add('placedShip')
+      //if no shift key held 
+    } else if ( xValue <= xLimitWhereShipFits){
+      let isValid = true
       for (let i = targetIndex; i <   targetLimit; i++) {
-        playerCells[i].classList.add  ('placedShip')
-        window.shipLength = ''
+        if (playerCells[i].classList.contains('placedShip')) {
+          console.log('this overlaps with another ship')
+          isValid = false
+          //SOME
+        }
+      }
+      if (isValid) {
+        drawShip(targetIndex, targetLimit, e.target)
       }
     } else {
       console.log('this ship will not fit here')
     }
+    // if shift key held -> places vertically
   }
   //select the square where the ship will go around 
   // add ship class to the surrounding squares the total of the ship id?
