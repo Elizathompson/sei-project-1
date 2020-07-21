@@ -39,8 +39,13 @@ function init() {
   
   // ! generate a random position on grid 0-99
 
-  const myNewRandomPosition = Math.floor(Math.random() * 100)
-  console.log(myNewRandomPosition)
+
+  function createNewRandomPosition() {
+    const randomPosition = Math.floor(Math.random() * 100)
+    return randomPosition
+  }
+  
+  console.log(createNewRandomPosition())
 
   // ! generate random number to chose if V or H 
   function directionComputer() {
@@ -56,39 +61,51 @@ function init() {
   
   directionComputer()
 
-  // ! objects for ships to go into
-
+  // ! object for ships to go into
   const compShips = {}
 
-    // function generateShips() {
-  //   const myNewRandomPosition = Math.random()
-  
-  
-  //   for (ships in compShips) {
-  //     if (!ships.contains(myNewRandomPosition)) {
-  //       let ship = []
-  //       for (let i = 0; i > shipLength; i++) {
-  //         ship.push({
-  //           index: myNewRandomPosition + (isHorizontal ? i : i + 10),
-  //           isHit: false
-  //         })
-  //       }
-  //       if (shipLength === 3) {
-  //         compShips.shipOne = ship
-  //       } else if (shipLength === 4) {
-  //         compShips.shipTwo = ship
-  //       }
-  //     } else {
-  //       generateShips()
-  //     }
-  //   }
-  // }
+  // ! -> need to form some kind of ship length
+  const shipLengthForComp = [3, 4, 4, 5, 7]
 
+  // 
+  function generateCompShips() {
+    for (let i = 0; i < shipLengthForComp.length - 1; i++){
+      console.log('ship')
+      const myNewRandomPosition = createNewRandomPosition()
+      const direction = directionComputer()
+      if (!compShips.contains(myNewRandomPosition)) {
+        const ship = []
+        for (let iterator = 0; iterator < shipLengthForComp[i]; iterator++) {
+          ship.push({
+            index: myNewRandomPosition + (direction === 'horizontal') ? iterator : iterator + 10,
+            hit: false
+          })
+        }
+        if (shipLengthForComp[i] === 3) {
+          compShips.shipOne = ship
+        } else if (shipLengthForComp[i] === 4) {
+          compShips.shipTwo = ship
+        } else if (shipLengthForComp[i] === 4) {
+          compShips.shipThree = ship
+        } else if (shipLengthForComp[i] === 5) {
+          compShips.shipFour = ship
+        } else if (shipLengthForComp[i] === 7) {
+          compShips.shipFive = ship
+        }
+      } else {
+        generateCompShips()
+      }
+    }
+  }
+    
+
+  generateCompShips()
+  console.log(compShips)
 
 
   // * CREATE SHIPS TO PLACE 
 
-  function createShips() {
+  function generatePlayerShips() {
     ships.forEach(ship => {
       const shipSize = ship.id
       for (let i = 0; i < shipSize; i++) {
@@ -105,7 +122,7 @@ function init() {
     })
   }
   // need to figure out how to get the ships to a good size - height wise?
-  createShips() 
+  generatePlayerShips() 
 
 
   // * LET PLAYER PLACE SHIPS: 
