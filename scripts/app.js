@@ -6,7 +6,8 @@ function init() {
   const cellsGrid = []
   const ships = document.querySelectorAll('.ship')
   const cellsShip = []
-  const playerCells = document.querySelectorAll('#player-grid .cell')
+  const playerGrid = document.querySelector('#player-grid')
+
 
 
   // * GRID VARIABLES
@@ -62,7 +63,13 @@ function init() {
   directionComputer()
 
   // ! object for ships to go into
-  const compShips = {}
+  const compShips = {
+    shipOne: [],
+    shipTwo: [],
+    shipThree: [],
+    shipFour: [],
+    shipFive: []
+  }
 
   // ! -> need to form some kind of ship length
   const shipLengthForComp = [3, 4, 4, 5, 7]
@@ -72,33 +79,37 @@ function init() {
     for (let i = 0; i < shipLengthForComp.length - 1; i++){
       console.log('ship')
       const myNewRandomPosition = createNewRandomPosition()
+      console.log(myNewRandomPosition)
       const direction = directionComputer()
-      if (!compShips.contains(myNewRandomPosition)) {
-        const ship = []
-        for (let iterator = 0; iterator < shipLengthForComp[i]; iterator++) {
-          ship.push({
-            index: myNewRandomPosition + (direction === 'horizontal') ? iterator : iterator + 10,
-            hit: false
-          })
+      // for (shipz in compShips) {
+      //   if(!shipz.includes(myNewRandomPosition))
+      // }
+      Object.keys(compShips).forEach(key => {
+        if (!key.includes(myNewRandomPosition)) {
+          const compShip = []
+          for (let iterator = 0; iterator < shipLengthForComp[i]; iterator++) {
+            compShip.push([
+              (myNewRandomPosition + (direction === 'horizontal') ? iterator + 1 : iterator + 10)
+            ])
+          }
+          console.log(compShip)
+          if (shipLengthForComp[i] === shipLengthForComp[0]) {
+            compShips.shipOne = compShip
+          } else if (shipLengthForComp[i] === shipLengthForComp[1]) {
+            compShips.shipTwo = compShip
+          } else if (shipLengthForComp[i] === shipLengthForComp[2]) {
+            compShips.shipThree = compShip
+          } else if (shipLengthForComp[i] === shipLengthForComp[3]) {
+            compShips.shipFour = compShip
+          } else if (shipLengthForComp[i] === shipLengthForComp[4]) {
+            compShips.shipFive = compShip
+          } 
+        } else {
+          generateCompShips()
         }
-        if (shipLengthForComp[i] === 3) {
-          compShips.shipOne = ship
-        } else if (shipLengthForComp[i] === 4) {
-          compShips.shipTwo = ship
-        } else if (shipLengthForComp[i] === 4) {
-          compShips.shipThree = ship
-        } else if (shipLengthForComp[i] === 5) {
-          compShips.shipFour = ship
-        } else if (shipLengthForComp[i] === 7) {
-          compShips.shipFive = ship
-        }
-      } else {
-        generateCompShips()
-      }
+      })
     }
   }
-    
-
   generateCompShips()
   console.log(compShips)
 
@@ -128,9 +139,11 @@ function init() {
   // * LET PLAYER PLACE SHIPS: 
 
   // ? Player varibles -> cell classes:
+  const playerCells = document.querySelectorAll('#player-grid .cell')
   playerCells.forEach(cell => {
     cell.classList.add('playerCell')
   })
+  console.log(playerCells)
   
   let shipLength = ''
 

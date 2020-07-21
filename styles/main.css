@@ -76,3 +76,11 @@ body {
 .placedShip {
   background-color: pink;
 }
+
+.sunk {
+  background-color: black;
+}
+
+.wholeBoat {
+  background-color: red;
+}
