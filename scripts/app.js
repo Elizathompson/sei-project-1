@@ -95,7 +95,7 @@ function init() {
     //change colour to show it has been placed 
   }
   
-  function drawShip(targetIndex, targetLimit, targetCell, incrementor = 1) {
+  function drawShipHorizontal(targetIndex, targetLimit, targetCell, incrementor = 1) {
     for (let i = targetIndex; i < targetLimit; i += incrementor) {
       console.log('ship goes here')
       targetCell.classList.add('placedShip')
@@ -104,12 +104,34 @@ function init() {
     }
   } // drawShip(x, x, x, 11)
 
-  let isValid = true
-  function checkValid(targetIndex, targetLimit, incrementor = 1) {
+  // function drawShipVertical(targetIndex, targetLimit, targetCell, incrementor = 11) {
+  //   for (let i = targetIndex; i < targetLimit; i += incrementor) {
+  //     console.log('ship goes here')
+  //     targetCell.classList.add('placedShip')
+  //     playerCells[i].classList.add('placedShip')
+  //     shipLength = 0
+  //   }
+  // }
+
+  let isValidNoOverLap = true
+  function checkValidNoOverLap(targetIndex, targetLimit, incrementor = 1) {
     for (let i = targetIndex; i < targetLimit; i += incrementor) {
       if (playerCells[i].classList.contains('placedShip')) {
         console.log('this overlaps with another ship')
-        isValid = false
+        isValidNoOverLap = false
+        return
+        //SOME
+      }
+    }
+  }
+
+  let isValidNoSpillOver = true 
+  function checkValidNoSpillOver(targetIndex, targetLimit, incrementor = 1) {
+    for (let i = targetIndex; i < targetLimit; i += incrementor) {
+      if (playerCells[i].classList.contains('placedShip')) {
+        console.log('this overlaps with another ship')
+        isValidNoSpillOver = false
+        return
         //SOME
       }
     }
@@ -127,6 +149,8 @@ function init() {
     console.log(xLimitWhereShipFits)
     const xValue = targetIndex % width
     console.log(xValue)
+    const yValue = Math.floor(targetIndex / width)
+    console.log(yValue)
     if (shipLength === 0) {
       console.log('No ship selected')
     } else if (e.target.classList.contains('placedShip')) {
@@ -134,28 +158,20 @@ function init() {
       return 
       //if no shift key held 
     } else if ( xValue <= xLimitWhereShipFits){
-      let isValid = true
-      for (let i = targetIndex; i <   targetLimit; i++) {
-        if (playerCells[i].classList.contains('placedShip')) {
-          console.log('this overlaps with another ship')
-          isValid = false
-          return
-          //SOME
-        }
-      }
-      checkValid(targetIndex, targetLimit)
-      if (isValid) {
-        drawShip(targetIndex, targetLimit, e.target)
+      checkValidNoSpillOver(targetIndex, targetLimit)
+      checkValidNoOverLap(targetIndex, targetLimit)
+      if (isValidNoOverLap && isValidNoSpillOver) {
+        drawShipHorizontal(targetIndex, targetLimit, e.target)
       } else {
         console.log('this ship will not fit here')
-        isValid = true
+        isValidNoOverLap = true
+        isValidNoSpillOver = true
         return
       }
     } else {
       console.log('this ship will not fit here')
     }
-    // if shift key held -> places vertically
-  }
+  }// if shift key held -> places vertically
 
   //select the square where the ship will go around 
   // add ship class to the surrounding squares the total of the ship id?
@@ -174,6 +190,5 @@ function init() {
 
 
 }
-
 
 window.addEventListener('DOMContentLoaded', init)
