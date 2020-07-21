@@ -6,16 +6,16 @@ function init() {
   const cellsGrid = []
   const ships = document.querySelectorAll('.ship')
   const cellsShip = []
-  const playerGrid = document.querySelector('#player-grid')
-  
+  const playerCells = document.querySelectorAll('#player-grid .cell')
 
 
-  // * grid variables 
+  // * GRID VARIABLES
 
   const width = 10
   const cellCount = width * width 
 
-  // * Creating the grids
+  // * CREATE THE TWO GRIDS:
+  
 
   function createGrid() {
     grids.forEach(grid => {
@@ -31,10 +31,62 @@ function init() {
 
   createGrid()
 
-  // * ship variables
+  // * CREATE COMPUTER SHIPS 
+  // const compShips = {
+  //   shipOne: [{ index: 1, isHit: false },{index: 2, isHit: false }, {index: 3, isHit: false }],
+  //   shipTwo: [] 
+  // }
+  
+  // ! generate a random position on grid 0-99
+
+  const myNewRandomPosition = Math.floor(Math.random() * 100)
+  console.log(myNewRandomPosition)
+
+  // ! generate random number to chose if V or H 
+  function directionComputer() {
+    const random = Math.random()
+    let direction = ''
+    if (random >= 0.5) {
+      direction = 'vertical'
+    } else {
+      direction = 'horizontal'
+    }
+    console.log(direction)
+  }
+  
+  directionComputer()
+
+  // ! objects for ships to go into
+
+  const compShips = {}
+
+    // function generateShips() {
+  //   const myNewRandomPosition = Math.random()
+  
+  
+  //   for (ships in compShips) {
+  //     if (!ships.contains(myNewRandomPosition)) {
+  //       let ship = []
+  //       for (let i = 0; i > shipLength; i++) {
+  //         ship.push({
+  //           index: myNewRandomPosition + (isHorizontal ? i : i + 10),
+  //           isHit: false
+  //         })
+  //       }
+  //       if (shipLength === 3) {
+  //         compShips.shipOne = ship
+  //       } else if (shipLength === 4) {
+  //         compShips.shipTwo = ship
+  //       }
+  //     } else {
+  //       generateShips()
+  //     }
+  //   }
+  // }
 
 
-  // * create ships 
+
+  // * CREATE SHIPS TO PLACE 
 
   function createShips() {
     ships.forEach(ship => {
@@ -55,128 +107,113 @@ function init() {
   // need to figure out how to get the ships to a good size - height wise?
   createShips() 
 
-  // * placing ships 
-  // ! first need to select the ships
-  //element  
-  // ? see ships above 
-  //create playerCell class 
-  const playerCells = document.querySelectorAll('#player-grid .cell')
+
+  // * LET PLAYER PLACE SHIPS: 
+
+  // ? Player varibles -> cell classes:
   playerCells.forEach(cell => {
     cell.classList.add('playerCell')
   })
   
-
-
-
-  //execution 
-
-  // ! should select ship and ship placement be inside one funciton?!
-
-
-  let shipLength = 0
+  let shipLength = ''
 
   function selectShip(e) {
     const shipCell = e.target
     const wholeShip = shipCell.parentElement
     if (wholeShip.classList.contains('selected')) {
       console.log('ship already placed')
-      window.shipLength = ''
+      shipLength = 0
       return
     } else {
       console.log('ship Selected')
       wholeShip.classList.add('selected')
       shipLength = wholeShip.id
     }
-
-    // console.log(window.shipLength)
-    //chnage color of the ship to show its been selected
-    // store the id of the ship aka the number of squares to highlight in the grid 
-    //make it so it cannot be selected again 
-    //change colour to show it has been placed 
   }
-  
-  function drawShipHorizontal(targetIndex, targetLimit, targetCell, incrementor = 1) {
+
+  function drawShip(targetIndex, targetLimit, targetCell, incrementor = 1) {
     for (let i = targetIndex; i < targetLimit; i += incrementor) {
       console.log('ship goes here')
       targetCell.classList.add('placedShip')
       playerCells[i].classList.add('placedShip')
       shipLength = 0
     }
-  } // drawShip(x, x, x, 11)
+  }
 
-  // function drawShipVertical(targetIndex, targetLimit, targetCell, incrementor = 11) {
-  //   for (let i = targetIndex; i < targetLimit; i += incrementor) {
-  //     console.log('ship goes here')
-  //     targetCell.classList.add('placedShip')
-  //     playerCells[i].classList.add('placedShip')
-  //     shipLength = 0
-  //   }
-  // }
 
   let isValidNoOverLap = true
-  function checkValidNoOverLap(targetIndex, targetLimit, incrementor = 1) {
+  function checkValidNoOverLap(targetIndex, targetLimit, incrementor) {
     for (let i = targetIndex; i < targetLimit; i += incrementor) {
       if (playerCells[i].classList.contains('placedShip')) {
         console.log('this overlaps with another ship')
         isValidNoOverLap = false
         return
-        //SOME
       }
     }
   }
 
   let isValidNoSpillOver = true 
-  function checkValidNoSpillOver(targetIndex, targetLimit, incrementor = 1) {
+  function checkValidNoSpillOver(targetIndex, targetLimit, incrementor) {
     for (let i = targetIndex; i < targetLimit; i += incrementor) {
       if (playerCells[i].classList.contains('placedShip')) {
         console.log('this overlaps with another ship')
         isValidNoSpillOver = false
         return
-        //SOME
       }
     }
   }
 
 
 
+  let incrementor = 1
+  let targetLimit = ''
+  let value = ''
 
   function selectLocation(e) {
+    const target = e.target
     const targetIndex = parseInt(e.target.textContent)
     const shipL = parseInt(shipLength)
-    const targetLimit = targetIndex + shipL
-    console.log(targetLimit)
-    const xLimitWhereShipFits = parseInt(width) - parseInt(shipL)
-    console.log(xLimitWhereShipFits)
+    const targetLimitX = targetIndex + shipL
+    console.log(targetLimitX)
+    const targetLimitY = targetIndex + (10 * shipL)
+    console.log(targetLimitY)
+    const axisLimitWhereShipFits = parseInt(width) - parseInt(shipL)
+    console.log(axisLimitWhereShipFits)
     const xValue = targetIndex % width
     console.log(xValue)
     const yValue = Math.floor(targetIndex / width)
     console.log(yValue)
     if (shipLength === 0) {
       console.log('No ship selected')
-    } else if (e.target.classList.contains('placedShip')) {
+    } else if (target.classList.contains('placedShip')) {
       console.log('there is a ship here already')
       return 
-      //if no shift key held 
-    } else if ( xValue <= xLimitWhereShipFits){
-      checkValidNoSpillOver(targetIndex, targetLimit)
-      checkValidNoOverLap(targetIndex, targetLimit)
-      if (isValidNoOverLap && isValidNoSpillOver) {
-        drawShipHorizontal(targetIndex, targetLimit, e.target)
+    } else {
+      if (e.shiftKey) {
+        value = yValue
+        incrementor = 10
+        targetLimit = targetLimitY
+      } else {
+        value = xValue
+        incrementor = 1
+        targetLimit = targetLimitX
+      }
+      console.log(e.shiftKey)
+      checkValidNoSpillOver(targetIndex, targetLimit, incrementor)
+      checkValidNoOverLap(targetIndex, targetLimit, incrementor)
+      if (isValidNoOverLap && isValidNoSpillOver && value <= axisLimitWhereShipFits) {
+        drawShip(targetIndex, targetLimit, e.target, incrementor)
       } else {
         console.log('this ship will not fit here')
         isValidNoOverLap = true
         isValidNoSpillOver = true
         return
       }
-    } else {
-      console.log('this ship will not fit here')
     }
-  }// if shift key held -> places vertically
 
-  //select the square where the ship will go around 
-  // add ship class to the surrounding squares the total of the ship id?
-
-  //event 
+    console.log('this ship will not fit here')
+  }
+  
 
 
   ships.forEach(ship => {
@@ -186,9 +223,10 @@ function init() {
     cell.addEventListener('click', selectLocation)
   })
 
-  // document.addEventListener('keydown', )
+  // document.addEventListener('keydown', selectLocation)
 
 
 }
+
 
 window.addEventListener('DOMContentLoaded', init)
