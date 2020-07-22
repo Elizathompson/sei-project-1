@@ -77,6 +77,17 @@ body {
   background-color: pink;
 }
 
+#player-grid > .hit {
+  background-color: red;
+}
+
+#computer-grid > .hit {
+  background-color:green;
+}
+
+#computer-grid > .miss {
+  background-color:orange;
+}
 .sunk {
   background-color: black;
 }
