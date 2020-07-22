@@ -8,7 +8,7 @@ function init() {
   const cellsShip = []
   // const playerGrid = document.querySelector('#player-grid')
 
-  const resetButton = document.querySelector('.reset')
+  // const resetButton = document.querySelector('.reset')
 
 
 
@@ -46,60 +46,66 @@ function init() {
   //   }
   // }
 
-  // function createRandomStartPostition() {
-  //   return Math.floor(Math.random() * 100)
+  // const compShips = {
+  //   shipOne: [{ index: 1, hit: false }, { index: 2, hit: false }, { index: 3, hit: false }],
+  //   shipTwo: [{ index: 10, hit: false }, { index: 11, hit: false }, { index: 12, hit: false }, { index: 13, hit: false }],
+  //   shipThree: [{ index: 52, hit: false }, { index: 53, hit: false }, { index: 54, hit: false }, { index: 55, hit: false }],
+  //   shipFour: [{ index: 60, hit: false }, { index: 61, hit: false }, { index: 62, hit: false }, { index: 63, hit: false }, { index: 64, hit: false }],
+  //   shipFive: [{ index: 93, hit: false }, { index: 94, hit: false }, { index: 95, hit: false }, { index: 96, hit: false }, { index: 97, hit: false }, { index: 98, hit: false }, { index: 99, hit: false }]
   // }
+  // console.log(compShips)
 
-  const computerShips = {
-    shipOne: [{ index: 1, hit: false }, { index: 2, hit: false }, { index: 3, hit: false }],
-    shipTwo: [{ index: 10, hit: false }, { index: 11, hit: false }, { index: 12, hit: false }, { index: 13, hit: false }],
-    shipThree: [{ index: 52, hit: false }, { index: 53, hit: false }, { index: 54, hit: false }, { index: 55, hit: false }],
-    shipFour: [{ index: 60, hit: false }, { index: 61, hit: false }, { index: 62, hit: false }, { index: 63, hit: false }, { index: 64, hit: false }],
-    shipFive: [{ index: 93, hit: false }, { index: 94, hit: false }, { index: 95, hit: false }, { index: 96, hit: false }, { index: 97, hit: false }, { index: 98, hit: false }, { index: 99, hit: false }]
+  const computerShips = {}
+
+  const shipsToPlace = [
+    { name: 'shipOne', size: 3 },
+    { name: 'shipTwo', size: 4 },
+    { name: 'shipThree', size: 5 },
+    { name: 'shipFour', size: 6 },
+    { name: 'shipFive', size: 7 }
+  ]
+  function isValidPosition(startPosition) {
+    return !Object.keys(computerShips).some(key => {
+      return computerShips[key].some(positon => {
+        return positon.index === startPosition
+      })
+    })
   }
+  function shipCanFit(startPosition, size) {
+    const firstIndex = startPosition % width
+    const finalIndex = (startPosition + (size - 1)) % width
+    return finalIndex > firstIndex
+  }
+  function getRandomPostion() {
+    return Math.floor(Math.random() * cellCount)
+  }
+  function placeSingleShip(ship, startPostion) {
+    const indecies = []
+    for (let i = 0; i < ship.size; i++) {
+      const newPosition = startPostion + i
+      if (!isValidPosition(newPosition) || newPosition > cellCount) {
+        return null
+      }
+      indecies.push({ index: startPostion + i, isHit: false })
+    }
+    return indecies
+  }
+  function placeComputerShips(ship) {
+    const randomStartPosition = getRandomPostion()
+    if (
+      !isValidPosition(randomStartPosition) ||
+      !shipCanFit(randomStartPosition, ship.size)
+    ) {
+      return placeComputerShips(ship)
+    }
+    const placedShip = placeSingleShip(ship, randomStartPosition)
+    if (!placedShip) {
+      return placeComputerShips(ship)
+    }
+    computerShips[ship.name] = placedShip
+  }
+  shipsToPlace.forEach(placeComputerShips)
   console.log(computerShips)
-
-  // const shipsToPlace = [
-  //   { name: 'shipOne', size: 3 },
-  //   { name: 'shipTwo', size: 3 },
-  //   { name: 'shipThree', size: 3 },
-  //   { name: 'shipFour', size: 3 },
-  //   { name: 'shipFive', size: 3 }
-  // ]
-
-  // function isValidPosition(startPosition) {
-  //   return !Object.keys(computerShips).some(key => {
-  //     return computerShips[key].some(positon => {
-  //       return positon.index === startPosition
-  //     })
-  //   })
-  // }
-
-  // function placeComputerShips() {
-  //   shipsToPlace.forEach(shipToPlace => {
-  //     const randomStartPosition = createRandomStartPostition()
-  //     if (!isValidPosition(randomStartPosition)) {
-  //       return placeComputerShips()
-  //     }
-  //     // ? An empty array to store the positions of each ship
-  //     const indecies = []
-  //     // ? Create the indexes from that random starting position (this is all horizontal for now), using a for loop
-  //     indecies.push({ index: randomStartPosition, isHit: false }) // ? Start by pushing that random index to the start
-  //     // ? then a for loop for the rest of the positions
-  //     // const isHorizontal = Math.random() > 0.5
-  //     for (let i = 1; i < shipToPlace.size; i++) {
-  //       const newPosition = randomStartPosition + i 
-  //       if (!isValidPosition(newPosition) || newPosition > 99 ) {
-  //         return placeComputerShips()
-  //       }
-  //       indecies.push({ index: randomStartPosition + i, isHit: false })
-  //     }
-  //     computerShips[shipToPlace.name] = indecies
-  //   })
-  // }
-  // placeComputerShips()
-  // console.log(computerShips)
-
 
   // * CREATE SHIPS TO PLACE 
 
@@ -264,6 +270,18 @@ function init() {
     })
   }
 
+  function updateCompShips(targetIndex) {
+    Object.keys(computerShips).forEach(ship => {
+      computerShips[ship] = computerShips[ship].map(item => {
+        if (item.index !== targetIndex) {
+          return item
+        }
+        return { index: targetIndex, isHit: true }
+      })
+    })
+    console.log(computerShips)
+  }
+
   function playerAttack(e) {
     console.log('player attack')
     const targetIndex = parseInt(e.target.textContent)
@@ -272,15 +290,15 @@ function init() {
     } else {
       if (isShipHere(targetIndex)) {
         e.target.classList.add('hit')
-        // update isHit: false -> isHit: true
-        if (!checkPlayerWon){
+        updateCompShips(targetIndex)
+        if (!checkPlayerWon()){
           computerAttack()
         } else {
           console.log('PLAYER WINS')
-          //DISPLAYER PLAYER WON
         }
       } else {
         e.target.classList.add('miss')
+        computerAttack()
       }
     }
   }
@@ -296,21 +314,21 @@ function init() {
     console.log('computer attack')
     const attackIndex = createRandomAttack()
     console.log(playerCells[attackIndex])
-    if (computerCells[attackIndex].classList.contains('ship')) {
-      computerCells[attackIndex].classList.add('hit')
-      if (checkComputerWon()) {
-        console.log('COMPUTER WINS')
-      } else {
-        console.log('computer hit')
-      }
+    if (playerCells[attackIndex].classList.contains('hit') || playerCells[attackIndex].classList.contains('miss')) {
+      computerAttack()
     } else {
-      computerCells[attackIndex].classList.add('miss')
+      if (playerCells[attackIndex].classList.contains('placedShip')) {
+        playerCells[attackIndex].classList.add('hit')
+        if (checkComputerWon()) {
+          console.log('COMPUTER WINS')
+        } else {
+          console.log('computer hit')
+        }
+      } else {
+        playerCells[attackIndex].classList.add('miss')
+      }
     }
-    
-    // player-grid > cellsGrid[attackIndex] has class ship? -> if true -> apply class hit 
   }
-  // must pick a random number between 0-99 -> does it contain the class ship? if so then apply class hit to the index
-  // run a check to see if every class ship also has class hit if not continue 
 
 
   ships.forEach(ship => {
@@ -325,9 +343,9 @@ function init() {
     cell.addEventListener('click', playerAttack)
   })
 
-  const startButton = document.querySelector('.start')
-  console.log(startButton)
-  startButton.addEventListener('click', computerAttack)
+  // const startButton = document.querySelector('.start')
+  // console.log(startButton)
+  // startButton.addEventListener('click', computerAttack)
 } 
 
 window.addEventListener('DOMContentLoaded', init)

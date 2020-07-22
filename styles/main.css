@@ -2,11 +2,6 @@
   box-sizing: border-box;
 }
 
-body {
-  height: 100vh;
-  margin: 0;
-}
-
 
 .grid-wrapper {
   height: 90vh;
@@ -80,6 +75,11 @@ body {
 #player-grid > .hit {
   background-color: red;
 }
+
+#player-grid > .miss {
+  background-color: orange;
+}
+
 
 #computer-grid > .hit {
   background-color:green;
