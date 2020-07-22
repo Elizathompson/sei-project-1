@@ -6,7 +6,7 @@ function init() {
   const cellsGrid = []
   const ships = document.querySelectorAll('.ship')
   const cellsShip = []
-  const playerGrid = document.querySelector('#player-grid')
+  // const playerGrid = document.querySelector('#player-grid')
 
 
 
@@ -41,77 +41,78 @@ function init() {
   // ! generate a random position on grid 0-99
 
 
-  function createNewRandomPosition() {
-    const randomPosition = Math.floor(Math.random() * 100)
-    return randomPosition
-  }
+  // function createNewRandomPosition() {
+  //   const randomPosition = Math.floor(Math.random() * 100)
+  //   return randomPosition
+  // }
   
-  console.log(createNewRandomPosition())
+  // console.log(createNewRandomPosition())
 
   // ! generate random number to chose if V or H 
-  function directionComputer() {
-    const random = Math.random()
-    let direction = ''
-    if (random >= 0.5) {
-      direction = 'vertical'
-    } else {
-      direction = 'horizontal'
-    }
-    console.log(direction)
-  }
-  
-  directionComputer()
-
-  // ! object for ships to go into
-  const compShips = {
-    shipOne: [],
-    shipTwo: [],
-    shipThree: [],
-    shipFour: [],
-    shipFive: []
+  // function directionComputer() {
+  //   const random = Math.random()
+  //   if (random >= 0.5) {
+  //     return 'vertical'
+  //   } else {
+  //     return 'horizontal'
+  //   }
+  // }
+  let randomStartPosition = 0
+  function createRandomStartPostition() {
+    return randomStartPosition = Math.floor(Math.random() * 100)
   }
 
-  // ! -> need to form some kind of ship length
-  const shipLengthForComp = [3, 4, 4, 5, 7]
+  const computerShips = {}
 
-  // 
-  function generateCompShips() {
-    for (let i = 0; i < shipLengthForComp.length - 1; i++){
-      console.log('ship')
-      const myNewRandomPosition = createNewRandomPosition()
-      console.log(myNewRandomPosition)
-      const direction = directionComputer()
-      // for (shipz in compShips) {
-      //   if(!shipz.includes(myNewRandomPosition))
-      // }
-      Object.keys(compShips).forEach(key => {
-        if (!key.includes(myNewRandomPosition)) {
-          const compShip = []
-          for (let iterator = 0; iterator < shipLengthForComp[i]; iterator++) {
-            compShip.push([
-              (myNewRandomPosition + (direction === 'horizontal') ? iterator + 1 : iterator + 10)
-            ])
-          }
-          console.log(compShip)
-          if (shipLengthForComp[i] === shipLengthForComp[0]) {
-            compShips.shipOne = compShip
-          } else if (shipLengthForComp[i] === shipLengthForComp[1]) {
-            compShips.shipTwo = compShip
-          } else if (shipLengthForComp[i] === shipLengthForComp[2]) {
-            compShips.shipThree = compShip
-          } else if (shipLengthForComp[i] === shipLengthForComp[3]) {
-            compShips.shipFour = compShip
-          } else if (shipLengthForComp[i] === shipLengthForComp[4]) {
-            compShips.shipFive = compShip
-          } 
-        } else {
-          generateCompShips()
+  const shipsToPlace = [
+    { name: 'shipOne', size: 3 },
+    { name: 'shipTwo', size: 4 },
+    { name: 'shipThree', size: 4 },
+    { name: 'shipFour', size: 5 },
+    { name: 'shipFive', size: 7 }
+  ]
+  function isValidPosition(startPosition) {
+    return !Object.keys(computerShips).some(key => {
+      return computerShips[key].includes(startPosition)
+    })
+  }
+  function placeComputerShips() {
+    shipsToPlace.forEach(shipToPlace => {
+      // ? Using a while loop here to keep looking for a valid start position (one that no other ship is on)
+      createRandomStartPostition()
+      console.log(randomStartPosition)
+      if (!isValidPosition(randomStartPosition)) {
+        return placeComputerShips()
+      }
+      // ? An empty array to store the positions of each ship
+      const indecies = []
+      // ? Create the indexes from that random starting position (this is all horizontal for now), using a for loop
+      indecies.push({ index: randomStartPosition, isHit: false }) // ? Start by pushing that random index to the start
+      // ? then a for loop for the rest of the positions
+      const isHorizontal = Math.random() > 0.5
+      for (let i = 1; i < shipToPlace.size; i++) {
+        const newPosition = isHorizontal ? randomStartPosition + i : randomStartPosition + (10 * i)
+        if (!isValidPosition(newPosition) || newPosition > 99 ) {
+          return placeComputerShips()
         }
-      })
-    }
+        indecies.push({ index: randomStartPosition + i, isHit: false })
+      }
+      computerShips[shipToPlace.name] = indecies
+    })
   }
-  generateCompShips()
-  console.log(compShips)
+  placeComputerShips()
+  console.log(computerShips)
+
+  // let isValidNoSpillOver = true 
+  // function checkValidNoSpillOver(targetIndex, targetLimit, incrementor) {
+  //   for (let i = targetIndex; i < targetLimit; i += incrementor) {
+  //     if (playerCells[i].classList.contains('placedShip')) {
+  //       console.log('this overlaps with another ship')
+  //       isValidNoSpillOver = false
+  //       return
+  //     }
+  //   }
+  // }
 
 
   // * CREATE SHIPS TO PLACE 
@@ -143,7 +144,7 @@ function init() {
   playerCells.forEach(cell => {
     cell.classList.add('playerCell')
   })
-  console.log(playerCells)
+  // console.log(playerCells)
   
   let shipLength = ''
 
@@ -182,17 +183,6 @@ function init() {
     }
   }
 
-  let isValidNoSpillOver = true 
-  function checkValidNoSpillOver(targetIndex, targetLimit, incrementor) {
-    for (let i = targetIndex; i < targetLimit; i += incrementor) {
-      if (playerCells[i].classList.contains('placedShip')) {
-        console.log('this overlaps with another ship')
-        isValidNoSpillOver = false
-        return
-      }
-    }
-  }
-
 
 
   let incrementor = 1
@@ -204,15 +194,10 @@ function init() {
     const targetIndex = parseInt(e.target.textContent)
     const shipL = parseInt(shipLength)
     const targetLimitX = targetIndex + shipL
-    console.log(targetLimitX)
     const targetLimitY = targetIndex + (10 * shipL)
-    console.log(targetLimitY)
     const axisLimitWhereShipFits = parseInt(width) - parseInt(shipL)
-    console.log(axisLimitWhereShipFits)
     const xValue = targetIndex % width
-    console.log(xValue)
     const yValue = Math.floor(targetIndex / width)
-    console.log(yValue)
     if (shipLength === 0) {
       console.log('No ship selected')
     } else if (target.classList.contains('placedShip')) {
@@ -228,15 +213,12 @@ function init() {
         incrementor = 1
         targetLimit = targetLimitX
       }
-      console.log(e.shiftKey)
-      checkValidNoSpillOver(targetIndex, targetLimit, incrementor)
       checkValidNoOverLap(targetIndex, targetLimit, incrementor)
-      if (isValidNoOverLap && isValidNoSpillOver && value <= axisLimitWhereShipFits) {
+      if (isValidNoOverLap  && value <= axisLimitWhereShipFits) {
         drawShip(targetIndex, targetLimit, e.target, incrementor)
       } else {
         console.log('this ship will not fit here')
         isValidNoOverLap = true
-        isValidNoSpillOver = true
         return
       }
     }
@@ -252,9 +234,6 @@ function init() {
   playerCells.forEach(cell => {
     cell.addEventListener('click', selectLocation)
   })
-
-  // document.addEventListener('keydown', selectLocation)
-
 
 }
 
