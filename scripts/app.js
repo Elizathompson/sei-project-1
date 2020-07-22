@@ -57,30 +57,33 @@ function init() {
   //     return 'horizontal'
   //   }
   // }
-  let randomStartPosition = 0
+
   function createRandomStartPostition() {
-    return randomStartPosition = Math.floor(Math.random() * 100)
+    return Math.floor(Math.random() * 100)
   }
 
-  const computerShips = {}
+  const computerShips = {
+  }
 
   const shipsToPlace = [
     { name: 'shipOne', size: 3 },
-    { name: 'shipTwo', size: 4 },
-    { name: 'shipThree', size: 4 },
-    { name: 'shipFour', size: 5 },
-    { name: 'shipFive', size: 7 }
+    { name: 'shipTwo', size: 3 },
+    { name: 'shipThree', size: 3 },
+    { name: 'shipFour', size: 3 },
+    { name: 'shipFive', size: 3 }
   ]
+
   function isValidPosition(startPosition) {
     return !Object.keys(computerShips).some(key => {
-      return computerShips[key].includes(startPosition)
+      return computerShips[key].some(positon => {
+        return positon.index === startPosition
+      })
     })
   }
+
   function placeComputerShips() {
     shipsToPlace.forEach(shipToPlace => {
-      // ? Using a while loop here to keep looking for a valid start position (one that no other ship is on)
-      createRandomStartPostition()
-      console.log(randomStartPosition)
+      const randomStartPosition = createRandomStartPostition()
       if (!isValidPosition(randomStartPosition)) {
         return placeComputerShips()
       }
@@ -89,9 +92,9 @@ function init() {
       // ? Create the indexes from that random starting position (this is all horizontal for now), using a for loop
       indecies.push({ index: randomStartPosition, isHit: false }) // ? Start by pushing that random index to the start
       // ? then a for loop for the rest of the positions
-      const isHorizontal = Math.random() > 0.5
+      // const isHorizontal = Math.random() > 0.5
       for (let i = 1; i < shipToPlace.size; i++) {
-        const newPosition = isHorizontal ? randomStartPosition + i : randomStartPosition + (10 * i)
+        const newPosition = randomStartPosition + i 
         if (!isValidPosition(newPosition) || newPosition > 99 ) {
           return placeComputerShips()
         }
@@ -102,17 +105,6 @@ function init() {
   }
   placeComputerShips()
   console.log(computerShips)
-
-  // let isValidNoSpillOver = true 
-  // function checkValidNoSpillOver(targetIndex, targetLimit, incrementor) {
-  //   for (let i = targetIndex; i < targetLimit; i += incrementor) {
-  //     if (playerCells[i].classList.contains('placedShip')) {
-  //       console.log('this overlaps with another ship')
-  //       isValidNoSpillOver = false
-  //       return
-  //     }
-  //   }
-  // }
 
 
   // * CREATE SHIPS TO PLACE 
