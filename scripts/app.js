@@ -7,9 +7,7 @@ function init() {
   const ships = document.querySelectorAll('.ship')
   const cellsShip = []
   // const playerGrid = document.querySelector('#player-grid')
-
-  // const resetButton = document.querySelector('.reset')
-
+  const resetButton = document.querySelector('.reset')
 
 
   // * GRID VARIABLES
@@ -37,14 +35,6 @@ function init() {
   // * CREATE COMPUTER SHIPS 
 
   // ! generate random number to chose if V or H 
-  // function directionComputer() {
-  //   const random = Math.random()
-  //   if (random >= 0.5) {
-  //     return 'vertical'
-  //   } else {
-  //     return 'horizontal'
-  //   }
-  // }
 
   // const compShips = {
   //   shipOne: [{ index: 1, hit: false }, { index: 2, hit: false }, { index: 3, hit: false }],
@@ -54,6 +44,15 @@ function init() {
   //   shipFive: [{ index: 93, hit: false }, { index: 94, hit: false }, { index: 95, hit: false }, { index: 96, hit: false }, { index: 97, hit: false }, { index: 98, hit: false }, { index: 99, hit: false }]
   // }
   // console.log(compShips)
+  
+  function directionComputer() {
+    const random = Math.random()
+    if (random >= 0.5) {
+      return true
+    } else {
+      return false
+    }
+  }
 
   const computerShips = {}
 
@@ -71,30 +70,49 @@ function init() {
       })
     })
   }
-  function shipCanFit(startPosition, size) {
+  function shipCanFitHorizontal(startPosition, size) {
     const firstIndex = startPosition % width
     const finalIndex = (startPosition + (size - 1)) % width
     return finalIndex > firstIndex
   }
+  function shipCanFitVertical(startPosition, size) {
+    const firstIndex = Math.floor(startPosition / width)
+    const finalIndex = Math.floor((startPosition + (10 * (size - 1))) / width)
+    return finalIndex > firstIndex
+  }
+
+
   function getRandomPostion() {
     return Math.floor(Math.random() * cellCount)
   }
-  function placeSingleShip(ship, startPostion) {
+
+
+  function placeSingleShip(ship, startPosition) {
     const indecies = []
-    for (let i = 0; i < ship.size; i++) {
-      const newPosition = startPostion + i
+    let incrementor = 1
+    for (let i = 0; i < ship.size * 10 ; i += incrementor) {
+      console.log(startPosition)
+      incrementor = 10
+      // if (directionComputer()){
+      //   incrementor = 10
+      // } else {
+      //   incrementor = 1
+      // }
+      const newPosition = parseInt(startPosition) + incrementor
+      console.log(newPosition)
       if (!isValidPosition(newPosition) || newPosition > cellCount) {
         return null
       }
-      indecies.push({ index: startPostion + i, isHit: false })
+      indecies.push({ index: parseInt(startPosition) + incrementor, isHit: false })
     }
     return indecies
   }
+
+
   function placeComputerShips(ship) {
     const randomStartPosition = getRandomPostion()
     if (
-      !isValidPosition(randomStartPosition) ||
-      !shipCanFit(randomStartPosition, ship.size)
+      !isValidPosition(randomStartPosition) || !shipCanFitVertical(randomStartPosition, ship.size)
     ) {
       return placeComputerShips(ship)
     }
@@ -106,6 +124,8 @@ function init() {
   }
   shipsToPlace.forEach(placeComputerShips)
   console.log(computerShips)
+
+
 
   // * CREATE SHIPS TO PLACE 
 
@@ -221,17 +241,13 @@ function init() {
 
 
 
-  // * ONCE ALL SHIPS ARE PLACED ATTACK BUTTON APPEARS 
-
-
+  // * ONCE ALL SHIPS ARE PLACED ATTACK INSTRUCTION / BUTTON APPEARS??
 
   // * PLAYER TURN 
 
 
-
-
   // first must select a cell on the computer grid
-  // ! celss on the computer grid 
+  // ! cells on the computer grid 
   const computerCells = document.querySelectorAll('#computer-grid .cell')
   computerCells.forEach(cell => {
     cell.classList.add('computerCell')
@@ -246,20 +262,16 @@ function init() {
       return computerShips[key].every(positon => {
         return positon.isHit === true
       })
-      // or have a number counting up to the top everytime there is a hit
     })
   }
 
+  let computerHits = 0
   function checkComputerWon() {
-    // does ever div with class 'ship' also have class 'hit' on the
-    const ships = document.querySelectorAll('.placedShip')
-    console.log(ships)
-    const allHaveClassHit = ships.every(ship => {
-      ship.classList.contains('hit')
-    })
-    console.log(allHaveClassHit)
-    return allHaveClassHit 
+    if (computerHits >= 25) {
+      return true 
+    }
   }
+  checkComputerWon()
 
 
   function isShipHere(targetIndex) {
@@ -281,6 +293,7 @@ function init() {
     })
     console.log(computerShips)
   }
+
 
   function playerAttack(e) {
     console.log('player attack')
@@ -319,6 +332,7 @@ function init() {
     } else {
       if (playerCells[attackIndex].classList.contains('placedShip')) {
         playerCells[attackIndex].classList.add('hit')
+        computerHits = computerHits + 1
         if (checkComputerWon()) {
           console.log('COMPUTER WINS')
         } else {
@@ -328,6 +342,10 @@ function init() {
         playerCells[attackIndex].classList.add('miss')
       }
     }
+  }
+
+  function handleReset() {
+    location.reload()
   }
 
 
@@ -342,10 +360,8 @@ function init() {
   computerCells.forEach(cell => {
     cell.addEventListener('click', playerAttack)
   })
+  resetButton.addEventListener('click', handleReset) 
 
-  // const startButton = document.querySelector('.start')
-  // console.log(startButton)
-  // startButton.addEventListener('click', computerAttack)
-} 
+}
 
 window.addEventListener('DOMContentLoaded', init)
