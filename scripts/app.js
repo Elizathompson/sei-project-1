@@ -345,8 +345,6 @@ function init() {
 
 
   const smartHits = [10, -10, 1, -1]
-  const smartHorizontalHits = [1, -1]
-  const smartVerticalHits = [10, -10]
   
 
   let lastShot = 'miss'
@@ -434,7 +432,7 @@ function init() {
       console.log(extraSmartHit)
       const newExtraSmartAttack = previousIndex + extraSmartHit
       console.log(newExtraSmartAttack)
-      if (newExtraSmartAttack < 99 || newExtraSmartAttack > 0) {
+      if (newExtraSmartAttack < 99 && newExtraSmartAttack > 0) {
         if (playerCells[newExtraSmartAttack].classList.contains('hit') || playerCells[newExtraSmartAttack].classList.contains('miss')) {
           lastShot = 'miss'
           computerAttack()
@@ -460,7 +458,7 @@ function init() {
             console.log(previousIndex)
           }
         }
-      } else if (newExtraSmartAttack > 99 || newExtraSmartAttack < 0) {
+      } else {
         lastShot = 'miss'
         computerAttack()
       }
