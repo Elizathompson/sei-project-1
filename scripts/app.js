@@ -47,11 +47,7 @@ function init() {
   
   function directionComputer() {
     const random = Math.random()
-    if (random >= 0.5) {
-      return true
-    } else {
-      return false
-    }
+    return random >= 0.5
   }
 
   const computerShips = {}
@@ -70,21 +66,28 @@ function init() {
       })
     })
   }
+  
   function shipCanFit(startPosition, size, direction) {
-    const firstIndex = (direction ? Math.floor(startPosition / width) : startPosition % width)
-    const finalIndex = (direction ? Math.floor((startPosition + (10 * (size - 1))) / width) : (startPosition + (size - 1)) % width)
-    return finalIndex > firstIndex
+    if (direction) {
+      const firstIndex = Math.floor(startPosition / width)
+      console.log('Yfirstindex', firstIndex)
+      const finalIndex = firstIndex + (10 * size)
+      const YAxisLimit = parseInt(width) - parseInt(size)
+      console.log('yaxislimit', YAxisLimit)
+      console.log('finalIndex > firstIndex', finalIndex > firstIndex)
+      console.log('firstIndex <= YAxisLimit', firstIndex <= YAxisLimit)
+      return firstIndex <= YAxisLimit
+    } else {
+      const firstIndex = startPosition % width
+      console.log('Xfirstindex', firstIndex)
+      const finalIndex =  (startPosition + (size - 1)) % width
+      const XAxisLimit = parseInt(width) - parseInt(size)
+      console.log('xaxislimit', XAxisLimit)
+      console.log('finalIndex > firstIndex',finalIndex > firstIndex)
+      console.log('firstIndex <= XAxisLimit', firstIndex <= XAxisLimit - 2)
+      return firstIndex <= XAxisLimit - 1
+    }
   }
-  // function shipCanFitHorizontal(startPosition, size) {
-  //   const firstIndex = startPosition % width
-  //   const finalIndex = (startPosition + (size - 1)) % width
-  //   return finalIndex > firstIndex
-  // }
-  // function shipCanFitVertical(startPosition, size) {
-  //   const firstIndex = Math.floor(startPosition / width)
-  //   const finalIndex = Math.floor((startPosition + (10 * (size - 1))) / width)
-  //   return finalIndex > firstIndex
-  // }
 
 
   function getRandomPostion() {
@@ -96,44 +99,51 @@ function init() {
     const indecies = []
     let incrementor = 1
     let compTargetLimit = 0
-    console.log(direction)
+    console.log('direction', direction)
     if (direction){
       incrementor = 10
       compTargetLimit = startPosition + (10 * ship.size)
-      console.log(ship.size)
-      console.log(compTargetLimit)
+      console.log('shipsize', ship.size)
+      console.log('comptarget limit', compTargetLimit)
     } else {
       incrementor = 1
       compTargetLimit = startPosition + ship.size
     }
     for (let i = startPosition; i < compTargetLimit; i += incrementor) {
-      console.log(startPosition)
+      console.log('startposition', startPosition)
       const newPosition = i + incrementor
-      console.log(newPosition)
+      const positionToLog = newPosition
+      console.log('newpostision', newPosition)
       if (!isValidPosition(newPosition) || newPosition > cellCount) {
         return null
       }
-      indecies.push({ index: parseInt(newPosition) + incrementor, isHit: false })
+      indecies.push({ index: positionToLog, isHit: false })
     }
     return indecies
   }
 
 
-  function placeComputerShips(ship) {
-    const direction = directionComputer()
+  function placeComputerShips(ship, direction) {
+    
     const randomStartPosition = getRandomPostion()
     if ( 
-      !isValidPosition(randomStartPosition) || !shipCanFit(randomStartPosition, ship.size, direction)
+      !isValidPosition(randomStartPosition)) {
+      return placeComputerShips(ship, direction)
+    }
+    if (!shipCanFit(randomStartPosition, ship.size, direction)
     ) {
-      return placeComputerShips(ship)
+      return placeComputerShips(ship, direction)
     }
     const placedShip = placeSingleShip(ship, randomStartPosition, direction)
     if (!placedShip) {
-      return placeComputerShips(ship)
+      return placeComputerShips(ship, direction)
     }
     computerShips[ship.name] = placedShip
   }
-  shipsToPlace.forEach(placeComputerShips)
+  shipsToPlace.forEach((ship) => {
+    const direction = directionComputer()
+    placeComputerShips(ship, direction)
+  } )
   console.log(computerShips)
 
 
@@ -205,7 +215,6 @@ function init() {
       }
     }
   }
-
 
 
   let incrementor = 1

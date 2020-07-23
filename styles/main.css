@@ -27,6 +27,7 @@
   flex-grow: 1;
   height: 10%;
   width: 10%;
+  user-select: none;
   /* background-color:blue; */
 }
 
