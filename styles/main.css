@@ -3,6 +3,8 @@
 }
 
 body, html {
+  display: flex;
+  flex-direction: column;
   height: 100%;
   /* The image used */
   background-image: url("../styles/images/bikinibottom.jpg");
@@ -14,22 +16,43 @@ body, html {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  font-family: 'Rowdies', cursive;
+  color: rgb(175, 29, 102);
+}
+section {
+  display: flex;
 }
 
 .title {
   display: flex;
   align-self: center;
   justify-self: center;
+  text-align: center;
+  margin-top: 30px;
 }
+
+.instructions {
+  font-family: 'Rowdies', cursive;
+  color: rgb(175, 29, 102);
+  font-size: 20px;
+}
+
 div > img {
   width: auto;
   height : auto;
   max-height: 100%;
   max-width: 100%;
 }
-.gameplayidea {
-  height: 400px;
-  width: 600px;
+
+.mainpic {
+  height: 250px;
+  width: 250px;
+}
+
+.spongebobjelly {
+  display: flex;
+  align-self: flex-end;
+  justify-self: flex-end;
 }
 
 .grid-wrapper {
@@ -50,6 +73,7 @@ div > img {
   height: 350px;
   width: 350px;
   font-size: 12px;
+  font-weight: 300;
   color: rgb(32, 38, 119);
   font-family: 'Rowdies', cursive;
 }
@@ -65,7 +89,6 @@ div > img {
 
 
 .ships-wrapper {
-  height: 10vh;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
@@ -96,13 +119,13 @@ div > img {
   flex-grow: 1;
   height: 28px;
   width: 28px;
-  background-image: url("../styles/images/jellyfish1.jpg");
+  background-image: url("../styles/images/jellyhit.jpeg");
   background-image: center;
   background-repeat: no-repeat;
   background-size: contain;
   border-radius: 50%;
   margin: 1px;
-  border: 1px solid rgb(209, 123, 212);
+  border: solid 1px rgba(255, 255, 255, 0.589);
 }
 
 .removed {
@@ -120,9 +143,8 @@ div > img {
 }
 
 
-
 .placedShip {
-  background-image: url("../styles/images/jellyfish1.jpg");
+  background-image: url("../styles/images/jellyhit.jpeg");
   background-image: center;
   background-repeat: no-repeat;
   background-size: contain;
@@ -130,7 +152,7 @@ div > img {
 }
 
 #player-grid > .hit {
-  background-image: url('../styles/images/explosion1.jpg');
+  background-image: url('../styles/images/patrickcatch.jpeg');
   background-image: center;
   background-repeat: no-repeat;
   background-size: contain;
@@ -138,16 +160,27 @@ div > img {
 }
 
 #player-grid > .miss {
-  background-color: orange;
+  background-image: url('../styles/images/whirlpool.jpeg');
+  background-image: center;
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 
 
 #computer-grid > .hit {
-  background-color:green;
+  background-image: url('../styles/images/jellyhit.jpeg');
+  background-image: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  border-radius: 50%;
+  border: solid 1px rgba(255, 255, 255, 0.589)
 }
 
 #computer-grid > .miss {
-  background-color:orange;
+  background-image: url('../styles/images/whirlpool.jpeg');
+  background-image: center;
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 .sunk {
   background-color: black;
@@ -161,8 +194,8 @@ div > img {
   background-color: rgb(226, 152, 226);
   padding: 10px;
   font-size: 18px;
-  color: rgb(181, 51, 185);
+  color: rgb(175, 29, 102);
   border-radius: 5px;
-  border: 2px solid rgb(181, 51, 185);
+  border: 2px solid rgb(175, 29, 102);
   font-family: 'Rowdies', cursive;
 }

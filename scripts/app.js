@@ -8,7 +8,13 @@ function init() {
   const cellsShip = []
   // const playerGrid = document.querySelector('#player-grid')
   const resetButton = document.querySelector('.reset')
+  const playerNamePara = document.querySelector('#playerName')
+  console.log(playerNamePara)
 
+  const playerName = window.prompt('Enter your name:')
+
+  playerNamePara.innerHTML = (`${playerName}'s Grid:`) 
+  console.log(playerNamePara.innerHTML)
 
   // * GRID VARIABLES
 
