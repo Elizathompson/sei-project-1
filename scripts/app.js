@@ -70,16 +70,21 @@ function init() {
       })
     })
   }
-  function shipCanFitHorizontal(startPosition, size) {
-    const firstIndex = startPosition % width
-    const finalIndex = (startPosition + (size - 1)) % width
+  function shipCanFit(startPosition, size, direction) {
+    const firstIndex = (direction ? Math.floor(startPosition / width) : startPosition % width)
+    const finalIndex = (direction ? Math.floor((startPosition + (10 * (size - 1))) / width) : (startPosition + (size - 1)) % width)
     return finalIndex > firstIndex
   }
-  function shipCanFitVertical(startPosition, size) {
-    const firstIndex = Math.floor(startPosition / width)
-    const finalIndex = Math.floor((startPosition + (10 * (size - 1))) / width)
-    return finalIndex > firstIndex
-  }
+  // function shipCanFitHorizontal(startPosition, size) {
+  //   const firstIndex = startPosition % width
+  //   const finalIndex = (startPosition + (size - 1)) % width
+  //   return finalIndex > firstIndex
+  // }
+  // function shipCanFitVertical(startPosition, size) {
+  //   const firstIndex = Math.floor(startPosition / width)
+  //   const finalIndex = Math.floor((startPosition + (10 * (size - 1))) / width)
+  //   return finalIndex > firstIndex
+  // }
 
 
   function getRandomPostion() {
@@ -87,36 +92,42 @@ function init() {
   }
 
 
-  function placeSingleShip(ship, startPosition) {
+  function placeSingleShip(ship, startPosition, direction) {
     const indecies = []
     let incrementor = 1
-    for (let i = 0; i < ship.size * 10 ; i += incrementor) {
-      console.log(startPosition)
+    let compTargetLimit = 0
+    console.log(direction)
+    if (direction){
       incrementor = 10
-      // if (directionComputer()){
-      //   incrementor = 10
-      // } else {
-      //   incrementor = 1
-      // }
-      const newPosition = parseInt(startPosition) + incrementor
+      compTargetLimit = startPosition + (10 * ship.size)
+      console.log(ship.size)
+      console.log(compTargetLimit)
+    } else {
+      incrementor = 1
+      compTargetLimit = startPosition + ship.size
+    }
+    for (let i = startPosition; i < compTargetLimit; i += incrementor) {
+      console.log(startPosition)
+      const newPosition = i + incrementor
       console.log(newPosition)
       if (!isValidPosition(newPosition) || newPosition > cellCount) {
         return null
       }
-      indecies.push({ index: parseInt(startPosition) + incrementor, isHit: false })
+      indecies.push({ index: parseInt(newPosition) + incrementor, isHit: false })
     }
     return indecies
   }
 
 
   function placeComputerShips(ship) {
+    const direction = directionComputer()
     const randomStartPosition = getRandomPostion()
-    if (
-      !isValidPosition(randomStartPosition) || !shipCanFitVertical(randomStartPosition, ship.size)
+    if ( 
+      !isValidPosition(randomStartPosition) || !shipCanFit(randomStartPosition, ship.size, direction)
     ) {
       return placeComputerShips(ship)
     }
-    const placedShip = placeSingleShip(ship, randomStartPosition)
+    const placedShip = placeSingleShip(ship, randomStartPosition, direction)
     if (!placedShip) {
       return placeComputerShips(ship)
     }
@@ -322,27 +333,140 @@ function init() {
     return Math.floor(Math.random() * 100)
   }
 
+  function createSmartAttack() {
+    return Math.floor(Math.random() * 4)
+  }
+
+  function createExtraSmartAttack() {
+    return (Math.round(Math.random()))
+  } 
+  console.log(createExtraSmartAttack())
+
+
+
+  const smartHits = [10, -10, 1, -1]
+  const smartHorizontalHits = [1, -1]
+  const smartVerticalHits = [10, -10]
+  
+
+  let lastShot = 'miss'
+  let previousIndex = 0
+  let previousSmartHit = 1
+
   function computerAttack() {
     // can I delay this two seconds?
     console.log('computer attack')
-    const attackIndex = createRandomAttack()
-    console.log(playerCells[attackIndex])
-    if (playerCells[attackIndex].classList.contains('hit') || playerCells[attackIndex].classList.contains('miss')) {
-      computerAttack()
-    } else {
-      if (playerCells[attackIndex].classList.contains('placedShip')) {
-        playerCells[attackIndex].classList.add('hit')
-        computerHits = computerHits + 1
-        if (checkComputerWon()) {
-          console.log('COMPUTER WINS')
-        } else {
-          console.log('computer hit')
-        }
+    if (lastShot === 'miss') {
+      const attackIndex = createRandomAttack()
+      console.log(playerCells[attackIndex])
+      if (playerCells[attackIndex].classList.contains('hit') || playerCells[attackIndex].classList.contains('miss')) {
+        computerAttack()
       } else {
-        playerCells[attackIndex].classList.add('miss')
+        if (playerCells[attackIndex].classList.contains('placedShip')) {
+          playerCells[attackIndex].classList.add('hit')
+          computerHits = computerHits + 1
+          lastShot = 'hit'
+          previousIndex = attackIndex
+          console.log(previousIndex)
+          if (checkComputerWon()) {
+            console.log('COMPUTER WINS')
+          } else {
+            console.log('computer hit')
+          }
+        } else {
+          playerCells[attackIndex].classList.add('miss')
+          lastShot = 'miss'
+          console.log('miss')
+          previousIndex = attackIndex
+          console.log(previousIndex)
+        }
+      } 
+    } else if (lastShot === 'hit' ) {
+      const smartHit = smartHits[createSmartAttack()] 
+      console.log(smartHit)
+      const newAttack = previousIndex + smartHit 
+      if (newAttack > 99 || newAttack < 0) {
+        computerAttack()
+      } else {
+        if (playerCells[newAttack].classList.contains('hit') || playerCells[newAttack].classList.contains('miss')) {
+          lastShot = 'miss'
+          computerAttack()
+        } else {
+          if (playerCells[newAttack].classList.contains('placedShip')) {
+            playerCells[newAttack].classList.add('hit')
+            computerHits = computerHits + 1
+            if (smartHit === 1 || smartHit === -1){
+              lastShot = 'hitHorizontal'
+              console.log(lastShot)
+              previousIndex = newAttack
+              previousSmartHit = smartHit
+              console.log(previousSmartHit)
+              console.log(previousIndex)
+              if (checkComputerWon()) {
+                console.log('COMPUTER WINS')
+              } else {
+                console.log('computer hit')
+              }
+            } else if (smartHit === 10 || smartHit === -10) {
+              lastShot = 'hitVertical'
+              console.log(lastShot)
+              previousSmartHit = smartHit
+              console.log(previousSmartHit)
+              previousIndex = newAttack
+              console.log(previousIndex)
+              if (checkComputerWon()) {
+                console.log('COMPUTER WINS')
+              } else {
+                console.log('computer hit')
+              }
+            }
+            
+          } else {
+            playerCells[newAttack].classList.add('miss')
+            console.log('smart hit miss')
+            lastShot = 'miss'
+            previousIndex = newAttack
+          }
+        }
+      }
+    } else if ( lastShot === 'hitHorizontal' || lastShot === 'hitVertical' ) {
+      const extraSmartHit = previousSmartHit 
+      console.log(extraSmartHit)
+      const newExtraSmartAttack = previousIndex + extraSmartHit
+      console.log(newExtraSmartAttack)
+      if (newExtraSmartAttack < 99 || newExtraSmartAttack > 0) {
+        if (playerCells[newExtraSmartAttack].classList.contains('hit') || playerCells[newExtraSmartAttack].classList.contains('miss')) {
+          lastShot = 'miss'
+          computerAttack()
+        } else {
+          if (playerCells[newExtraSmartAttack].classList.contains('placedShip')) {
+            playerCells[newExtraSmartAttack].classList.add('hit')
+            console.log('hit class addded')
+            computerHits = computerHits + 1
+            lastShot = 'hitHorizontal'
+            previousIndex = newExtraSmartAttack
+            console.log(previousIndex)
+            if (checkComputerWon()) {
+              console.log('COMPUTER WINS')
+            } else {
+              console.log('computer horizontal hit')
+            }
+          } else {
+            playerCells[newExtraSmartAttack].classList.add('miss')
+            lastShot = 'miss'
+            console.log('miss class addded')
+            previousIndex = newExtraSmartAttack
+            console.log('extra smart hit miss')
+            console.log(previousIndex)
+          }
+        }
+      } else if (newExtraSmartAttack > 99 || newExtraSmartAttack < 0) {
+        lastShot = 'miss'
+        computerAttack()
       }
     }
   }
+
 
   function handleReset() {
     location.reload()
