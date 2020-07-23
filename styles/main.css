@@ -182,13 +182,6 @@ div > img {
   background-repeat: no-repeat;
   background-size: contain;
 }
-.sunk {
-  background-color: black;
-}
-
-.wholeBoat {
-  background-color: red;
-}
 
 .reset{
   background-color: rgb(226, 152, 226);
