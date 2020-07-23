@@ -16,6 +16,18 @@ body, html {
   background-size: cover;
 }
 
+.title {
+  display: flex;
+  align-self: center;
+  justify-self: center;
+}
+div > img {
+  width: auto;
+  height : auto;
+  max-height: 100%;
+  max-width: 100%;
+}
+
 .grid-wrapper {
   /* height: 90vh; */
   display: flex;
