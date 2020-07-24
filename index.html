@@ -6,67 +6,110 @@
   <title>Document</title>
   <script src="scripts/app.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Rowdies:wght@300;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/normalize.css">
   <link rel="stylesheet" href="styles/main.css">
 </head>
 
 <body .bg>
-  <div class="title">
-    <img src="/styles/images/title.png" alt="Jelly fishing title">
-  </div>
+
+  <section class="titlesection">
+    <div class="titlepics">
+      <div class="mainpic">
+        <img  src="/styles/images/patrickandSBjelly.png" alt="spongebob riding a jelly fish">
+        </div>
+    </div>
+    <div class="titlepics">
+      <div class="title">
+        <img src="/styles/images/title.png" alt="Jelly fishing title">
+      </div>
+    </div>
+    <div class="titlepics">
+      <div class="mainpic spongebobjelly">
+        <img  src="/styles/images/SBjelly.png" alt="spongebob riding a jelly fish">
+      </div>
+    </div>
+  
+  </section>
 
 
-  <section class="computer">
+<section class="mainstuff">
+  <section class="hanger">
+    <div class="gameinstructions instructions">
+      <p>
+        Welcome to the jellyfish fields of bikini bottom!
+      </p>
+      <p>
+        First, please hide all your jellyfish from patrick on your grid
+      </p> 
+      <p>
+        Then, once you have placed all your jelly fish, start fishing on Patrick's grid by clicking on the cells
+      </p>
+      <p>
+        First player to catch all the other's jellyfish first wins!
+      </p>
 
+    </div>
+    <div class="ships-wrapper">
+      <div class="ind-ship-wrapper">
+        <div id="3" class="ship"></div>
+      </div>
+      <div class="ind-ship-wrapper">
+        <div id="5" class="ship" ></div>
+      </div>
+      <div class="ind-ship-wrapper">
+        <div id="4" class="ship" ></div>
+      </div>
+      <div class="ind-ship-wrapper">
+        <div id="7" class="ship" ></div>
+      </div>
+      <div class="ind-ship-wrapper">
+        <div id="6" class="ship" ></div>
+      </div>
+    </div>
+    <div class="shipPlacingInsructions instructions">
+      <p>
+        Click on a jellyfish swarm to select it
+      </p>
+      <p>
+        Then click on the location you'd like to place it on your grid
+      </p> 
+      <p>
+        (Hold down shift when you click to place your jelly fish swarm vertically!)
+      </p>
+    </div>
+
+</section>
+
+<section class="grids">
+<section class="computer">
   <div id="computer-wrapper" class="grid-wrapper">
-    <p>Patrick's Grid</p>
+    <p class="instructions">Patrick's Grid:</p>
     <div id="computer-grid" class="grid"></div>
   </div>
-  <div class="mainpic spongebobjelly">
-    <img  src="/styles/images/SBjelly.png" alt="spongebob riding a jelly fish">
-  </div>
 </section>
 
-<div class="ships-wrapper">
-  <div class="shipPlacingInsructions instructions">
-    <p>
-      Hold down shift to place your jelly fish swarm vertically!
-    </p>
-  </div>
-    <div class="ind-ship-wrapper">
-      <div id="3" class="ship"></div>
+  <section class="player">
+    <div id="player-wrapper"    class="grid-wrapper">
+      <p id="playerName" class="instructions">Player's Grid:</p>
+      <div id="player-grid" class="grid"></div>
     </div>
-    <div class="ind-ship-wrapper">
-      <div id="5" class="ship" ></div>
-    </div>
-    <div class="ind-ship-wrapper">
-      <div id="4" class="ship" ></div>
-    </div>
-    <div class="ind-ship-wrapper">
-      <div id="7" class="ship" ></div>
-    </div>
-    <div class="ind-ship-wrapper">
-      <div id="6" class="ship" ></div>
-    </div>
-  </div>
+      <div class="shipreplace instructions">
+          Note that if you don't like how your ships are placed - hit reset and start again!
+      </div>
+      <section class="controls">
+        <div>
+          <button class="reset">RESET</button>
+        </div>
+      </section>
+    </section>
+  </section>
+</section>
+
+
+    
+
+
   
-<section class="player">
-  <div class="mainpic">
-    <img  src="/styles/images/patrickandSBjelly.png" alt="spongebob riding a jelly fish">
-  </div>
-  <div id="player-wrapper" class="grid-wrapper">
-    <p id="playerName">Player's Grid:</p>
-    <div id="player-grid" class="grid"></div>
-  </div>
-</section>
-
-<section class="controls">
-  <div>
-    <button class="reset">RESET</button>
-  </div>
-  
-</section>
-
-
 
 
 

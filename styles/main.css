@@ -6,21 +6,29 @@ body, html {
   display: flex;
   flex-direction: column;
   height: 100%;
-  /* The image used */
   background-image: url("../styles/images/bikinibottom.jpg");
-
-  /* Full height */
   height: 100%;
-
-  /* Center and scale the image nicely */
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
   font-family: 'Rowdies', cursive;
   color: rgb(175, 29, 102);
 }
+
 section {
   display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  text-align: center;
+}
+
+
+.titlesection {
+  margin-top: 20px;
+  display: flex;
+  flex-grow: 1;
+  flex-direction: row;
 }
 
 .title {
@@ -34,7 +42,24 @@ section {
 .instructions {
   font-family: 'Rowdies', cursive;
   color: rgb(175, 29, 102);
-  font-size: 20px;
+  font-size: 18px;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  background-color: rgb(219, 104, 185);
+  border: solid 2px  rgb(175, 29, 102);
+}
+
+.gameinstructions {
+  display: flex;
+  align-self: flex-start;
+  justify-self: flex-start;
+  margin-bottom: 70px;
+}
+
+.shipPlacingInsructions {
+  margin-bottom: 20px;
 }
 
 div > img {
@@ -45,21 +70,48 @@ div > img {
 }
 
 .mainpic {
-  height: 250px;
-  width: 250px;
+  height: 180px;
+  width: 180px;
 }
 
-.spongebobjelly {
+
+.mainstuff {
   display: flex;
-  align-self: flex-end;
-  justify-self: flex-end;
+  flex-grow: 2;
+  flex-direction: row;
 }
+
+.grids {
+  flex: 2;
+}
+
+.hanger {
+  flex: 1;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  margin-left: 60px;
+}
+
+.shipreplace {
+  max-width: 700px;
+  display: flex;
+  align-self: center;
+  margin: 10px;
+
+}
+
+
+/* GRID BUILDING AND STYLING: */
+
 
 .grid-wrapper {
   /* height: 90vh; */
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  margin: 10px;
+  align-items: center;
+
 }
 
 
@@ -70,8 +122,8 @@ div > img {
   flex-wrap: wrap;
   height: 100%;
   justify-content: center;
-  height: 350px;
-  width: 350px;
+  height: 340px;
+  width: 340px;
   font-size: 12px;
   font-weight: 300;
   color: rgb(32, 38, 119);
@@ -94,7 +146,7 @@ div > img {
   flex-direction: column;
   align-items: center;
   flex-wrap: wrap;
-  /* background-image: ; */
+  margin-bottom: 20px;
 
 }
 
@@ -114,6 +166,9 @@ div > img {
   justify-content: center;
   color: rgba(0, 255, 65, 0);
 }
+
+
+/* JAVASCRIPT CLASSES FOR SHOOTING:  */
 
 .ship div {
   flex-grow: 1;
@@ -184,11 +239,12 @@ div > img {
 }
 
 .reset{
-  background-color: rgb(226, 152, 226);
+  background-color: rgb(219, 104, 185);
   padding: 10px;
   font-size: 18px;
   color: rgb(175, 29, 102);
   border-radius: 5px;
-  border: 2px solid rgb(175, 29, 102);
+  border: 4px solid rgb(175, 29, 102);
   font-family: 'Rowdies', cursive;
+  margin-bottom: 30px;
 }
