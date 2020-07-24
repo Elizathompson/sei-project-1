@@ -8,6 +8,7 @@ function init() {
   const cellsShip = []
   // const playerGrid = document.querySelector('#player-grid')
   const resetButton = document.querySelector('.reset')
+  const startButton = document.querySelector('.start')
   const playerNamePara = document.querySelector('#playerName')
   console.log(playerNamePara)
 
@@ -15,6 +16,46 @@ function init() {
 
   playerNamePara.innerHTML = (`${playerName}'s Grid:`) 
   console.log(playerNamePara.innerHTML)
+
+  const mainStuff = document.querySelector('body')
+  const computerWinsScreen = document.createElement('div')
+  computerWinsScreen.id = 'computerWinsScreenID'
+  const computerWinsImg = document.createElement('img')
+
+  const youWinScreen = document.createElement('div')
+  youWinScreen.id = 'youWinScreenID'
+  const youWinImg = document.createElement('img')
+
+
+  // * SOUND STUFF 
+
+  const audio = document.querySelector('#sound')
+
+
+  function playAyeAyeCaptain() {
+    audio.src = 'styles/Sounds/AyeAyeCaptain.mp3'
+    audio.play()
+  }
+
+  function playMiss() {
+    audio.src = 'styles/Sounds/missSound.mp3'
+    audio.play()
+  }
+
+  function playHit() {
+    audio.src = 'styles/Sounds/bubbles.mp3'
+    audio.play()
+  }
+
+  function playSBLaugh() {
+    audio.src = 'styles/Sounds/SBLaugh.mp3'
+    audio.play()
+  }
+
+  function playPatrickLaugh() {
+    audio.src = 'styles/Sounds/PatrickLaugh.mp3'
+    audio.play()
+  }
 
   // * GRID VARIABLES
 
@@ -250,9 +291,6 @@ function init() {
   
 
 
-
-  // * ONCE ALL SHIPS ARE PLACED ATTACK INSTRUCTION / BUTTON APPEARS??
-
   // * PLAYER TURN 
 
 
@@ -263,9 +301,18 @@ function init() {
     cell.classList.add('computerCell')
   })
 
+  function computerWinsScreenPopup() {
+    playPatrickLaugh()
+    computerWinsScreen.appendChild(computerWinsImg)
+    mainStuff.appendChild(computerWinsScreen)
+  }
 
 
-  // ! NEED TO SET THIS UP SO IT ONLY WORKS ONCE ALL THE SHIPS ARE PLACED 
+  function youWinScreenPopup() {
+    playSBLaugh()
+    youWinScreen.appendChild(youWinImg)
+    mainStuff.appendChild(youWinScreen)
+  }
 
   function checkPlayerWon() {
     return Object.keys(computerShips).every(key => {
@@ -276,13 +323,13 @@ function init() {
   }
 
   let computerHits = 0
+
   function checkComputerWon() {
     if (computerHits >= 25) {
-      return true 
+      true
+      computerWinsScreenPopup()
     }
   }
-  checkComputerWon()
-
 
   function isShipHere(targetIndex) {
     return Object.keys(computerShips).some(key => {
@@ -313,17 +360,19 @@ function init() {
     } else {
       if (isShipHere(targetIndex)) {
         e.target.classList.add('hit')
+        playHit()
         updateCompShips(targetIndex)
         if (!checkPlayerWon()){
           timerId = setTimeout(() => {
             computerAttack()
           }, 500)
         } else {
-          window.alert('PLAYER WINS')
+          youWinScreenPopup()
         }
       } else {
         e.target.classList.add('miss')
         timerId = setTimeout(() => {
+          playMiss()
           computerAttack()
         }, 500)
       }
@@ -453,6 +502,8 @@ function init() {
     cell.addEventListener('click', playerAttack)
   })
   resetButton.addEventListener('click', handleReset) 
+
+  startButton.addEventListener('click', playAyeAyeCaptain)
 
 }
 

@@ -29,6 +29,8 @@ section {
   display: flex;
   flex-grow: 1;
   flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }
 
 .title {
@@ -42,13 +44,14 @@ section {
 .instructions {
   font-family: 'Rowdies', cursive;
   color: rgb(175, 29, 102);
-  font-size: 18px;
+  font-size: 16px;
   padding: 5px;
   display: flex;
   flex-direction: column;
   text-align: center;
-  background-color: rgb(219, 104, 185);
+  background-color: rgba(219, 104, 185, 0.959);
   border: solid 2px  rgb(175, 29, 102);
+  border-radius: 5px;
 }
 
 .gameinstructions {
@@ -79,6 +82,8 @@ div > img {
   display: flex;
   flex-grow: 2;
   flex-direction: row;
+  max-width: 1200px;
+  align-self: center;
 }
 
 .grids {
@@ -126,7 +131,7 @@ div > img {
   width: 340px;
   font-size: 12px;
   font-weight: 300;
-  color: rgb(32, 38, 119);
+  color: rgba(32, 38, 119, 0.616);
   font-family: 'Rowdies', cursive;
 }
 
@@ -238,7 +243,8 @@ div > img {
   background-size: contain;
 }
 
-.reset{
+button {
+  width: 150px;
   background-color: rgb(219, 104, 185);
   padding: 10px;
   font-size: 18px;
@@ -248,3 +254,32 @@ div > img {
   font-family: 'Rowdies', cursive;
   margin-bottom: 30px;
 }
+
+
+/* POP UPS*/ 
+
+#computerWinsScreenID {
+  margin-top: 400px;
+  margin-left: 420px;
+  align-self:center;
+  justify-self: center;
+  position:absolute;
+  width:700px;
+  height:400px;
+  background-image: url('../styles/images/patrickwins.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  }
+
+  #youWinScreenID {
+    margin-top: 350px;
+    margin-left: 320px;
+    align-self:center;
+    justify-self: center;
+    position:absolute;
+    width:600px;
+    height:600px;
+    background-image: url('../styles/images/youwin.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    }
