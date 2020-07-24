@@ -225,8 +225,30 @@ function init() {
       wholeShip.classList.add('removed')
       shipCell.classList.add('removed')
       shipLength = wholeShip.id
+      const allPlaced = checkAllShipsPlaced()
+      if (allPlaced){
+        console.log('all placed')
+      }
     }
   }
+
+  const shipsPlacedMessage = document.createElement('div')
+  shipsPlacedMessage.id = 'shipsPlacedMessageID'
+  shipsPlacedMessage.classList.add('instructions')
+  shipsPlacedMessage.innerHTML = 'All jellyfish swarms hidden!<br>Start fishing!'
+  const shipsWrapper = document.querySelector('.ships-wrapper')
+  
+  
+
+  function checkAllShipsPlaced() {
+    const wholeShips = document.querySelectorAll('.selected')
+    if (wholeShips.length >= 5) {
+      shipsWrapper.appendChild(shipsPlacedMessage)
+      return true
+    } 
+  }
+
+
 
   function drawShip(targetIndex, targetLimit, targetCell, incrementor = 1) {
     for (let i = targetIndex; i < targetLimit; i += incrementor) {
