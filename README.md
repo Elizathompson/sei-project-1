@@ -24,19 +24,19 @@ This is my own SpongeBob themed recreation of the original battleships board gam
 
 1.	The game begins with two blanks grids and some instructions – the player clicks on the jellyfish and then on the grid where they would like to hide all their own jellyfish
 
-![styles/images/ScreenShot-1.png]
+![game screenshot 1](styles/images/ScreenShot-1.png)
 
 2.	Once the player has hidden all their own jellyfish, they then click on the computer’s grid to search for the computer’s jellyfish 
 
-![styles/images/Screenshot-2.png]
+![game screenshot 2](styles/images/Screenshot-2.png)
 
 3.	On every go, the player is notified whether they have found or missed the jellyfish on the computer’s grid. Then the computer will attack the player’s board.
 
-![styles/images/Screenshot-3.png]
+![game screnshot 3](styles/images/Screenshot-3.png)
 
 4.	Depending on who finds all the other’s jellyfish first a win pop up appears notifying the player who has one and the option to replay.
 
-![styles/images/Screenshot-4.png]
+![game screenshot 4](styles/images/Screenshot-4.png)
 
 
 ## Process
